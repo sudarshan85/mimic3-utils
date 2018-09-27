@@ -76,5 +76,3 @@ dependencies:
   - wheel=0.31.1=py36_0
   - xz=5.2.4=h14c3975_4
   - zlib=1.2.11=ha838bed_2
-prefix: /home/sudarshan/anaconda3/envs/m3-utils
-
