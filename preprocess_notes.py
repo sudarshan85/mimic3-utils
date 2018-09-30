@@ -192,9 +192,12 @@ def replace_misc(text):
     Replaces certain obvious easy to process items in the notes for helping
     downstream modeling
     """    
-    # replace different types of "year old" with year_old
+    # replace different types of "year old" with 
     # matches: y.o., y/o, years old. year old, yearold
-    text = re.sub(r'-?\byears? ?-?old\b|\by(?:o|r)*[ ./-]*o(?:ld)?\b', ' years old', text, flags=re.IGNORECASE)
+    text = re.sub(r'-?\byears? ?-?old\b|\by(?:o|r)*[ ./-]*o(?:ld)?\b', ' yo', text, flags=re.IGNORECASE)
+
+    # Does the same thing as above but copied from https://arxiv.org/abs/1808.02622v1
+    text = re.sub(r'(\d+)\s*(year\s*old|y.\s*o.|yo|year\s*old|year-old|-year-old|-year old)', r'\1 yo', text, flags=re.IGNORECASE)
     
     # replaces yr, yr's, yrs with years
     text = re.sub(r'\byr[\'s]*\b', 'years', text, re.IGNORECASE)
@@ -202,6 +205,10 @@ def replace_misc(text):
     # replace Pt and pt with patient, and IN/OUT/OT PT with patient
     # Note: PT also refers to physical therapy and physical therapist
     text = re.sub(r'\b[P|p]t.?|\b(IN|OU?T) PT\b', 'patient ', text)
+
+    # replace sex with consistant token
+    text = re.sub(r'\b(gentlman|male|man|m|M)(?!\S)\b', 'male', text)
+    text = re.sub(r'\b(female|woman|f|F)(?!\S)\b', 'female', text)
     
     # replace time types
     text = re.sub(r'\d{0,2}:\d{0,2} \b[A|P]\.?M\.?\b', replace_time, text, flags=re.IGNORECASE)
